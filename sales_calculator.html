@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Rep Meeting Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .calculator {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #results {
+            margin-top: 20px;
+            background-color: #e9e9e9;
+            padding: 15px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>Sales Rep Meeting Calculator</h1>
+        <form id="calcForm">
+            <label for="meetingsGoal">Meetings Goal:</label>
+            <input type="number" id="meetingsGoal" required min="1" step="1">
+            
+            <label for="showRate">Show Rate (%):</label>
+            <input type="number" id="showRate" required min="1" max="100" step="0.1">
+            
+            <label for="conversionRate">Conversation Conversion Rate (%):</label>
+            <input type="number" id="conversionRate" required min="0.1" max="100" step="0.1">
+            
+            <label for="connectRate">Connect Rate (%):</label>
+            <input type="number" id="connectRate" required min="0.1" max="100" step="0.1">
+            
+            <label for="workingDays">Working Days per Month:</label>
+            <input type="number" id="workingDays" required min="1" max="31" step="1">
+            
+            <button type="submit">Calculate</button>
+        </form>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        document.getElementById('calcForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const meetingsGoal = parseFloat(document.getElementById('meetingsGoal').value);
+            const showRate = parseFloat(document.getElementById('showRate').value) / 100;
+            const conversionRate = parseFloat(document.getElementById('conversionRate').value) / 100;
+            const connectRate = parseFloat(document.getElementById('connectRate').value) / 100;
+            const workingDays = parseFloat(document.getElementById('workingDays').value);
+            
+            const meetingsNeeded = Math.ceil(meetingsGoal / showRate);
+            const conversationsNeeded = Math.ceil(meetingsNeeded / conversionRate);
+            const dialsNeeded = Math.ceil(conversationsNeeded / connectRate);
+            const dialsPerDay = Math.ceil(dialsNeeded / workingDays);
+            
+            const results = `
+                <h2>Results:</h2>
+                <p>Meetings to set: ${meetingsNeeded}</p>
+                <p>Conversations needed: ${conversationsNeeded}</p>
+                <p>Total dials needed: ${dialsNeeded}</p>
+                <p>Dials per day: ${dialsPerDay}</p>
+            `;
+            
+            document.getElementById('results').innerHTML = results;
+        });
+    </script>
+</body>
+</html>
